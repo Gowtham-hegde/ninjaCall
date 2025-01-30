@@ -1,0 +1,440 @@
+{
+  "name": "[Drive]-[slack] slack Task Get Salesforce Contact Details",
+  "description": "When there is a trigger on a specified schedule, do action",
+  "version": 7,
+  "private": true,
+  "concurrency": 1,
+  "code": {
+    "number": 0,
+    "provider": "clock",
+    "name": "scheduled_event",
+    "as": "dfefa662",
+    "title": null,
+    "description": "<span class=\"provider\">Trigger</span> on a <span class=\"provider\">specified schedule</span>",
+    "keyword": "trigger",
+    "input": {
+      "time_unit": "minutes",
+      "trigger_every": "5"
+    },
+    "extended_input_schema": [
+      {
+        "control_type": "integer",
+        "default": "5",
+        "enforce_template_mode": true,
+        "extends_schema": true,
+        "hint": "Define repeating schedule. Enter whole numbers only.\n                        This field can be set to a minimum of 5 minutes.",
+        "label": "Trigger every",
+        "name": "trigger_every",
+        "optional": false,
+        "suffix": {
+          "text": "minutes"
+        },
+        "type": "string"
+      },
+      {
+        "control_type": "date_time",
+        "enforce_template_mode": true,
+        "extends_schema": true,
+        "hint": "Set date and time to start or leave blank to start immediately. <b>Once recipe has been run or tested, value cannot be changed.</b>",
+        "label": "Start after",
+        "name": "start_after",
+        "optional": true,
+        "parse_output": "date_time_conversion",
+        "since_field": true,
+        "type": "date_time",
+        "render_input": "date_time_conversion"
+      }
+    ],
+    "block": [
+      {
+        "number": 1,
+        "provider": "workato_app",
+        "name": "get_recipe",
+        "as": "a83b01b3",
+        "keyword": "action",
+        "toggleCfg": {
+          "recipe_id": false
+        },
+        "input": {
+          "recipe_id": [
+            {
+              "zip_name": "drive_slack_slack_task_get_salesforce_contact_details.recipe.json",
+              "name": "[Drive]-[slack] slack Task Get Salesforce Contact Details",
+              "folder": ""
+            }
+          ]
+        },
+        "uuid": "7bc73d75-c08c-4f3d-9079-7afc8308d296"
+      },
+      {
+        "number": 2,
+        "as": "d55c01e4",
+        "keyword": "stop",
+        "input": {
+          "stop_with_error": "false"
+        },
+        "uuid": "1b458784-347d-461c-b6e6-279d7a1c4963"
+      },
+      {
+        "number": 3,
+        "provider": "google_drive",
+        "name": "create_folder",
+        "as": "80aeda5e",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+          "folderId": {
+            "ids": [
+              "0AGhTk5NjfzJsUk9PVA",
+              "140N3xiJ7PIXIzvSHoQEZOEdl4sRI3YJm"
+            ],
+            "titles": [
+              "My Drive",
+              "Sheets"
+            ]
+          }
+        },
+        "toggleCfg": {
+          "folderId": true
+        },
+        "input": {
+          "folderId": "140N3xiJ7PIXIzvSHoQEZOEdl4sRI3YJm",
+          "name": "Slack Folder"
+        },
+        "uuid": "181ccfe9-e4a5-4d5a-8773-b721fb0621a4",
+        "skip": true
+      },
+      {
+        "number": 4,
+        "provider": "google_people",
+        "name": "create_contact",
+        "as": "ed5f8d4f",
+        "title": null,
+        "description": null,
+        "keyword": "action",
+        "dynamicPickListSelection": {
+          "personFields": [
+            {
+              "label": "Birthdays",
+              "value": "birthdays"
+            }
+          ]
+        },
+        "input": {
+          "names": {
+            "givenName": "Rajesh"
+          },
+          "personFields": "birthdays"
+        },
+        "extended_output_schema": [
+          {
+            "control_type": "text",
+            "label": "Resource name",
+            "name": "resourceName",
+            "type": "string"
+          },
+          {
+            "control_type": "text",
+            "label": "Etag",
+            "name": "etag",
+            "type": "string"
+          },
+          {
+            "hint": "A person's birthday.",
+            "label": "Birthdays",
+            "name": "birthdays",
+            "of": "object",
+            "optional": true,
+            "properties": [
+              {
+                "properties": [
+                  {
+                    "control_type": "checkbox",
+                    "label": "Primary",
+                    "render_input": {
+                    },
+                    "parse_output": {
+                    },
+                    "toggle_hint": "Select from option list",
+                    "toggle_field": {
+                      "label": "Primary",
+                      "control_type": "text",
+                      "toggle_hint": "Use custom value",
+                      "optional": true,
+                      "hint": "<b>True</b> if the field is the primary field, <b>false</b> if the field is a secondary field.",
+                      "placeholder": "true",
+                      "type": "boolean",
+                      "name": "primary"
+                    },
+                    "optional": true,
+                    "hint": "<b>True</b> if the field is the primary field, <b>false</b> if the field is a secondary field.",
+                    "placeholder": "true",
+                    "type": "boolean",
+                    "name": "primary"
+                  },
+                  {
+                    "control_type": "checkbox",
+                    "label": "Verified",
+                    "render_input": {
+                    },
+                    "parse_output": {
+                    },
+                    "toggle_hint": "Select from option list",
+                    "toggle_field": {
+                      "label": "Verified",
+                      "control_type": "text",
+                      "toggle_hint": "Use custom value",
+                      "type": "boolean",
+                      "name": "verified"
+                    },
+                    "type": "boolean",
+                    "name": "verified"
+                  },
+                  {
+                    "properties": [
+                      {
+                        "control_type": "select",
+                        "label": "Type",
+                        "optional": true,
+                        "pick_list": [
+                          [
+                            "Contact",
+                            "CONTACT"
+                          ]
+                        ],
+                        "hint": "The source type.",
+                        "toggle_hint": "Select from list",
+                        "toggle_field": {
+                          "control_type": "text",
+                          "label": "Type",
+                          "toggle_hint": "Enter custom value",
+                          "optional": true,
+                          "hint": "The source type. Valid values are: <b>CONTACT</b>.",
+                          "type": "string",
+                          "name": "type"
+                        },
+                        "type": "string",
+                        "name": "type"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "ID",
+                        "optional": true,
+                        "hint": "The unique identifier within the source type generated by the server.",
+                        "type": "string",
+                        "name": "id"
+                      },
+                      {
+                        "control_type": "text",
+                        "label": "Etag",
+                        "optional": true,
+                        "hint": "The <a href=\"https://en.wikipedia.org/wiki/HTTP_ETag\", target=\"_blank\">HTTP entity tag</a> of the source. Used for web cache validation.",
+                        "type": "string",
+                        "name": "etag"
+                      },
+                      {
+                        "control_type": "date_time",
+                        "label": "Update time",
+                        "render_input": "convert_date_time",
+                        "parse_output": "convert_date_time",
+                        "type": "date_time",
+                        "name": "updateTime"
+                      },
+                      {
+                        "properties": [
+                          {
+                            "control_type": "text",
+                            "label": "Object type",
+                            "type": "string",
+                            "name": "objectType"
+                          },
+                          {
+                            "name": "userTypes",
+                            "type": "array",
+                            "of": "string",
+                            "label": "User types"
+                          }
+                        ],
+                        "label": "Profile metadata",
+                        "type": "object",
+                        "name": "profileMetadata"
+                      }
+                    ],
+                    "label": "Source",
+                    "optional": true,
+                    "hint": "The source of a field.",
+                    "type": "object",
+                    "name": "source"
+                  }
+                ],
+                "label": "Metadata",
+                "optional": true,
+                "hint": "Metadata about a field.",
+                "type": "object",
+                "name": "metadata"
+              },
+              {
+                "properties": [
+                  {
+                    "control_type": "integer",
+                    "label": "Year",
+                    "parse_output": "integer_conversion",
+                    "optional": true,
+                    "hint": "Year of the date. Must be from <b>1</b> to <b>9999</b>.",
+                    "type": "integer",
+                    "name": "year"
+                  },
+                  {
+                    "control_type": "integer",
+                    "label": "Month",
+                    "parse_output": "integer_conversion",
+                    "optional": true,
+                    "hint": "Month of a year. Must be from <b>1</b> to <b>12</b>.",
+                    "type": "integer",
+                    "name": "month"
+                  },
+                  {
+                    "control_type": "integer",
+                    "label": "Day",
+                    "parse_output": "integer_conversion",
+                    "optional": true,
+                    "hint": "Day of a month. Must be from <b>1</b> to <b>31</b> and valid for the year and month.",
+                    "type": "integer",
+                    "name": "day"
+                  }
+                ],
+                "label": "Date",
+                "optional": true,
+                "hint": "The date of the birthday.",
+                "type": "object",
+                "name": "date"
+              },
+              {
+                "control_type": "text",
+                "label": "Text",
+                "optional": true,
+                "hint": "A free-form string representing, the user's birthday.",
+                "type": "string",
+                "name": "text"
+              }
+            ],
+            "type": "array"
+          }
+        ],
+        "uuid": "dad18086-af08-439c-bff7-b50353dbc132",
+        "skip": true
+      },
+      {
+        "number": 5,
+        "provider": "slack_bot",
+        "name": "post_bot_reply_v2",
+        "as": "bfe88aa9",
+        "keyword": "action",
+        "input": {
+          "text": "#{_dp('{\"pill_type\":\"output\",\"provider\":\"google_people\",\"line\":\"ed5f8d4f\",\"path\":[\"resourceName\"]}')}Contact Created Succesfully"
+        },
+        "uuid": "310250e1-004e-4b62-9595-1c98f390abac",
+        "skip": true
+      },
+      {
+        "number": 6,
+        "provider": "google_drive",
+        "name": "create_folder",
+        "as": "0910a8a8",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+          "folderId": {
+            "ids": [
+              "0AGhTk5NjfzJsUk9PVA",
+              "140N3xiJ7PIXIzvSHoQEZOEdl4sRI3YJm"
+            ],
+            "titles": [
+              "My Drive",
+              "Sheets"
+            ]
+          }
+        },
+        "toggleCfg": {
+          "folderId": true
+        },
+        "input": {
+          "folderId": "140N3xiJ7PIXIzvSHoQEZOEdl4sRI3YJm",
+          "name": "Slack Folder"
+        },
+        "uuid": "91b02ef8-5e7d-4365-9dd8-7c703891caab",
+        "skip": true
+      },
+      {
+        "number": 7,
+        "provider": "slack_bot",
+        "name": "post_bot_message",
+        "as": "b3bb5d24",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+          "channel": {
+            "ids": [
+              "C04G1K9JPGV"
+            ],
+            "titles": [
+              "training"
+            ]
+          }
+        },
+        "toggleCfg": {
+          "channel": false
+        },
+        "input": {
+          "channel": "C04G1K9JPGV",
+          "text": "#{_dp('{\"pill_type\":\"output\",\"provider\":\"google_drive\",\"line\":\"0910a8a8\",\"path\":[\"name\"]}')} Folder Created In drive"
+        },
+        "uuid": "9a3a9c38-afa2-4aab-aa1f-4007bb29fc1c",
+        "skip": true
+      }
+    ],
+    "uuid": "353840b7-933b-41f6-a05f-40f656b2ed9f",
+    "format_version": 2
+  },
+  "config": [
+    {
+      "keyword": "application",
+      "provider": "clock",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "google_drive",
+      "skip_validation": true,
+      "account_id": {
+        "zip_name": "Connection/gowtham_google_drive_account.connection.json",
+        "name": "Gowtham Google Drive account",
+        "folder": "Connection"
+      }
+    },
+    {
+      "keyword": "application",
+      "provider": "google_people",
+      "skip_validation": true,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "slack_bot",
+      "skip_validation": true,
+      "account_id": {
+        "zip_name": "Connection/gowtham_workbot_for_slack_account.connection.json",
+        "name": "Gowtham  Workbot  for  Slack account",
+        "folder": "Connection"
+      }
+    },
+    {
+      "keyword": "application",
+      "provider": "workato_app",
+      "skip_validation": false,
+      "account_id": {
+        "zip_name": "RecipeOps/thabitha_recipeops_by_workato_account.connection.json",
+        "name": "Thabitha RecipeOps by Workato account",
+        "folder": "RecipeOps"
+      }
+    }
+  ]
+}
